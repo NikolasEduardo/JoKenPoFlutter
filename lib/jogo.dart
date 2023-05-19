@@ -11,17 +11,17 @@ var apertado = false;
 
 class _JogoState extends State<Jogo> {
   var _vitoria = "Faça sua jogada";
+  var _escolhabot = "🤓";
   var escolhas = ['👊', '✋', '✌'];
-  var _imagembot = "imagens/padrao.png";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.black,
-        appBar: AppBar(title: Text("                 JoKenPô Com Imagens")),
+        appBar: AppBar(title: Text("                             JoKenPô")),
         body: Center(
           child: Column(
             children: [
-              //___________________________texto - escolha do app
+              //texto - escolha do app
               Padding(
                 padding: EdgeInsets.only(top: 32, bottom: 16),
                 child: Text("Escolha do Bot:",
@@ -30,12 +30,23 @@ class _JogoState extends State<Jogo> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white)),
               ),
-              //___________________________imagem
+              //imagem
               Container(
-                child: Image.asset(_imagembot),
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  "$_escolhabot",
+                  style: TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-
-              //___________________________texto - resultado
+              //texto - resultado
               Padding(
                 padding: EdgeInsets.only(top: 32, bottom: 16),
                 child: Text("$_vitoria",
@@ -44,52 +55,48 @@ class _JogoState extends State<Jogo> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white)),
               ),
-
-              //___________________________linha 3 emojis
+              //linha 3 emojis
               Padding(
                 padding: EdgeInsets.only(top: 32, bottom: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        var resultadofinal = aleatoriezarImagem(escolhas, "👊");
-                        setState(() {
-                          _imagembot = resultadofinal[0];
-                          _vitoria = resultadofinal[1];
-                        });
-                      },
-                      child: Image.asset(
-                        "imagens/pedra.png",
-                        width: 120,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        var resultadofinal = aleatoriezarImagem(escolhas, "✋");
-                        setState(() {
-                          _imagembot = resultadofinal[0];
-                          _vitoria = resultadofinal[1];
-                        });
-                      },
-                      child: Image.asset(
-                        "imagens/papel.png",
-                        width: 120,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        var resultadofinal = aleatoriezarImagem(escolhas, "✌");
-                        setState(() {
-                          _imagembot = resultadofinal[0];
-                          _vitoria = resultadofinal[1];
-                        });
-                      },
-                      child: Image.asset(
-                        "imagens/tesoura.png",
-                        width: 120,
-                      ),
-                    )
+                    ElevatedButton(
+                        onPressed: () {
+                          var resultadofinal = aleatoriezar(escolhas, "👊");
+                          setState(() {
+                            _escolhabot = resultadofinal[0];
+                            _vitoria = resultadofinal[1];
+                          });
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20, bottom: 20),
+                          child: Text("👊", style: TextStyle(fontSize: 50)),
+                        )),
+                    ElevatedButton(
+                        onPressed: () {
+                          var resultadofinal = aleatoriezar(escolhas, "✋");
+                          setState(() {
+                            _escolhabot = resultadofinal[0];
+                            _vitoria = resultadofinal[1];
+                          });
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20, bottom: 20),
+                          child: Text("✋", style: TextStyle(fontSize: 50)),
+                        )),
+                    ElevatedButton(
+                        onPressed: () {
+                          var resultadofinal = aleatoriezar(escolhas, "✌");
+                          setState(() {
+                            _escolhabot = resultadofinal[0];
+                            _vitoria = resultadofinal[1];
+                          });
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20, bottom: 20),
+                          child: Text("✌", style: TextStyle(fontSize: 50)),
+                        )),
                   ],
                 ),
               ),
@@ -99,30 +106,17 @@ class _JogoState extends State<Jogo> {
   }
 }
 
-//FUNÇÃO PARA AS IMAGENS
-List aleatoriezarImagem(escolhas, suaescolha) {
+List aleatoriezar(escolhas, suaescolha) {
   if (apertado) {
     apertado = false;
-    return ["imagens/padrao.png", "Faça sua jogada"];
+    return ["🤓", "Faça sua jogada"];
   } else {
     apertado = true;
-    var botdecisao;
     var aleatorio = Random();
     var index = aleatorio.nextInt(escolhas.length);
     var escolhafinal = escolhas[index];
     var resultado;
     print(escolhafinal);
-    switch (escolhafinal) {
-      case "👊":
-        botdecisao = "imagens/pedra.png";
-        break;
-      case "✋":
-        botdecisao = "imagens/papel.png";
-        break;
-      case "✌":
-        botdecisao = "imagens/tesoura.png";
-        break;
-    }
     if (escolhafinal == suaescolha) {
       print("Empate");
     } else if ((escolhafinal == "👊" && suaescolha == "✌") ||
@@ -136,6 +130,6 @@ List aleatoriezarImagem(escolhas, suaescolha) {
       print("Você Ganhou, pois $suaescolha ganha de $escolhafinal");
       resultado = "Você Ganhou, pois $suaescolha ganha de $escolhafinal";
     }
-    return ["$botdecisao", "$resultado"];
+    return ["$escolhafinal", "$resultado"];
   }
 }
